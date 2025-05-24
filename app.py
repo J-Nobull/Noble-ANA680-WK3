@@ -10,7 +10,7 @@ with open("xgb_bundle.pkl", "rb") as f:
 
 @app.route("/")
 def home():
-    return "Wine Quality Predictor API is running."
+    return "Wine Quality Predictor API is now running."
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -23,5 +23,4 @@ def predict():
         return jsonify({"error": str(e)})
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
-
+    app.run(debug=True)
