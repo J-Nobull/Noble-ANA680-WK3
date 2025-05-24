@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wine Quality Predictor</title>
+    <style>
+        body { font-family: Arial; text-align: center; margin-top: 40px; }
+        form { display: inline-block; text-align: left; }
+        input { margin: 5px 0; width: 100%; padding: 6px; }
+        .result { font-weight: bold; margin-top: 20px; color: green; }
+    </style>
+</head>
+<body>
+    <h1>Wine Quality Prediction</h1>
+    <form method="POST">
+        {% for field in [
+            'fixed_acidity', 'volatile_acidity', 'citric_acid', 'residual_sugar', 'chlorides',
+            'free_sulfur_dioxide', 'total_sulfur_dioxide', 'density', 'pH', 'sulphates', 'alcohol'
+        ] %}
+            <label>{{ field.replace("_", " ").title() }}:</label>
+            <input type="number" step="any" name="{{ field }}" required><br>
+        {% endfor %}
+        <button type="submit">Predict</button>
+    </form>
+
+    {% if prediction is not none %}
+        <div class="result">Predicted Wine Quality: {{ prediction }}</div>
+    {% endif %}
+</body>
+</html>
+
