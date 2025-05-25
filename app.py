@@ -6,7 +6,8 @@ app = Flask(__name__)
 
 # Load model
 with open("xgb_bundle.pkl", "rb") as f:
-    model = pickle.load(f)
+    bundle = pickle.load(f)
+    model = bundle["model"]
 
 @app.route("/")
 def home():
