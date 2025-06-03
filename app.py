@@ -10,8 +10,8 @@ FEATURE_KEYS = [
     'total_sulfur_dioxide', 'density', 'pH', 'sulphates', 'alcohol'
 ]
 
-# Load XGBoost model
-with open("xgb_bundle.pkl", "rb") as f:
+# Load LogReg model
+with open("wine-qual.pkl", "rb") as f:
     bundle = pickle.load(f)
     model = bundle["model"]
 
