@@ -1,10 +1,9 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import pickle
 import numpy as np
 
 app = Flask(__name__)
 
-# Define expected wine feature keys in order
 FEATURE_KEYS = [
     'fixed_acidity', 'volatile_acidity', 'citric_acid',
     'residual_sugar', 'chlorides', 'free_sulfur_dioxide',
@@ -18,13 +17,12 @@ with open("xgb_bundle.pkl", "rb") as f:
 
 @app.route("/")
 def home():
-    return "Wine Quality Predictor API is now running."
+    return render_template("index.html")
 
 @app.route("/predict", methods=["POST"])
 def predict():
     try:
         data = request.get_json(force=True)
-        # Ensure all required features are present
         features = [float(data[key]) for key in FEATURE_KEYS]
         features_array = np.array(features).reshape(1, -1)
         prediction = model.predict(features_array)
