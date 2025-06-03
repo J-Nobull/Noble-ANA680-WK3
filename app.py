@@ -32,5 +32,15 @@ def predict():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route("/predict_form", methods=["POST"])
+def predict_form():
+    try:
+        features = [float(request.form[key]) for key in FEATURE_KEYS]
+        features_array = np.array(features).reshape(1, -1)
+        prediction = model.predict(features_array)
+        return render_template("index.html", prediction=int(prediction[0]))
+    except Exception as e:
+        return render_template("index.html", error=str(e))
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
