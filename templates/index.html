@@ -1,70 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wine Quality Predictor</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 40px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            display: inline-block;
-            background: white;
-            padding: 30px 50px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 12px rgba(0,0,0,0.1);
-        }
-        .form-group {
-            margin: 15px 0;
-            text-align: left;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        input {
-            width: 100%;
-            padding: 8px;
-            font-size: 1em;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px 25px;
-            font-size: 1em;
-            background-color: #007BFF;
-            border: none;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        .form-group { margin-bottom: 1em; }
+        label { display: block; margin-bottom: 0.3em; }
+        input[type=number] { width: 10em; }
+        .result { margin-top: 2em; font-weight: bold; }
     </style>
 </head>
 <body>
     <h1>Wine Quality Predictor</h1>
     <form action="/predict_form" method="post">
+        {% set feature_labels = {
+            'fixed_acidity': 'Fixed Acidity',
+            'volatile_acidity': 'Volatile Acidity',
+            'citric_acid': 'Citric Acid',
+            'residual_sugar': 'Residual Sugar',
+            'chlorides': 'Chlorides',
+            'free_sulfur_dioxide': 'Free Sulfur Dioxide',
+            'total_sulfur_dioxide': 'Total Sulfur Dioxide',
+            'density': 'Density',
+            'pH': 'pH',
+            'sulphates': 'Sulphates',
+            'alcohol': 'Alcohol'
+        } %}
         {% for field in [
             'fixed_acidity', 'volatile_acidity', 'citric_acid', 'residual_sugar', 'chlorides',
             'free_sulfur_dioxide', 'total_sulfur_dioxide', 'density', 'pH', 'sulphates', 'alcohol'
         ] %}
         <div class="form-group">
-            <label for="{{ field }}">{{ field.replace('_', ' ').title() }}:</label>
-            <input type="number" step="any" name="{{ field }}" required>
+            <label for="{{ field }}">
+                {{ feature_labels[field] }} ({{ feature_ranges[field][0] }} - {{ feature_ranges[field][1] }})
+            </label>
+            <input type="number" step="any" name="{{ field }}" min="{{ feature_ranges[field][0] }}" max="{{ feature_ranges[field][1] }}" required>
         </div>
         {% endfor %}
         <button type="submit">Predict</button>
     </form>
+    {% if prediction %}
+    <div class="result">
+        {{ prediction }}
+    </div>
+    {% endif %}
 </body>
 </html>
